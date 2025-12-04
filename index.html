@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <!-- 加入此 meta 標籤以確保響應式設計在手機上正常運作 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>舞碼列表</title> <!-- 初始標題，將被 J2 內容覆蓋 -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 10px; /* 減少 padding 增加手機可用空間 */
+            background: #f5f5f5;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px; /* 調整標題下邊距 */
+            font-size: 1.5em; /* 調整標題字體大小以適應手機 */
+        }
+        .item {
+            background: white;
+            border-radius: 8px; /* 調整圓角 */
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .links-container {
+            margin-top: 10px;
+        }
+        .video-link {
+            display: block; /* 讓連結垂直排列 */
+            margin-bottom: 5px;
+            color: #0066cc;
+            text-decoration: none;
+            word-wrap: break-word; /* 防止長連結撐開佈局 */
+        }
+        .video-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 媒體查詢：針對大螢幕設備調整佈局 (可選) */
+        @media (min-width: 600px) {
+            body {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .item {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 給 H1 一個 ID，方便 JavaScript 存取 -->
+<h1 id="main-title">資料載入中...</h1>
+
+<div id="content"></div>
+
+<script>
+    // 您的 CSV 試算表網址
+    const CSV_URL = "docs.google.com";
+    const contentDiv = document.getElementById("content");
+    const titleH1 = document.getElementById("main-title");
+
+    // 1. 取得 J2 儲存格內容作為標題
+    // 通過指定 range 參數僅獲取 J2 儲存格
+    const J2_URL = CSV_URL.replace('output=csv', 'range=J2&output=csv');
+    fetch(J2_URL)
+        .then(res => res.text())
+        .then(titleText => {
+            // 將 H1 標題更新為 J2 的內容
+            titleH1.textContent = titleText.trim() || "舞碼列表"; 
+        })
+        .catch(err => {
+            console.error("無法載入標題:", err);
+            titleH1.textContent = "舞碼列表載入失敗";
+        });
+
+    // 2. 載入舞碼列表資料
+    fetch(CSV_URL + "&t=" + new Date().getTime())
+        .then(res => res.text())
+        .then(csv => {
+            const rows = csv.split("\n");
+            contentDiv.innerHTML = "";
+
+            // 取第 1–40 列
+            rows.slice(1, 41).forEach(row => {
+                const cols = row.split(",");
+
+                const seq = cols[1];     // B 舞序編號
+                const name = cols[2];    // C 舞碼名稱
+                const country = cols[3]; // D 國家名稱
+                const type = cols[4];    // E 舞蹈類型
+                const link1 = cols[5];   // F 影片1 URL
+                const link2 = cols[6];   // G 影片2 URL
+
+                // 建立超連結元素，而不是 iframe
+                const videoLink1HTML = link1 ? `<a href="${link1.trim()}" target="_blank" class="video-link">影片連結 1</a>` : "";
+                const videoLink2HTML = link2 ? `<a href="${link2.trim()}" target="_blank" class="video-link">影片連結 2</a>` : "";
+
+                if (seq && name) { // 確保資料有效才顯示
+                    contentDiv.innerHTML += `
+                        <div class="item">
+                            <h2>${seq.trim()} - ${name.trim()}</h2>
+                            <p><b>國家：</b>${country.trim()}</p>
+                            <p><b>舞蹈類型：</b>${type.trim()}</p>
+                            <div class="links-container">
+                                ${videoLink1HTML}
+                                ${videoLink2HTML}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        })
+        .catch(err => {
+            console.error("無法載入舞碼資料:", err);
+            contentDiv.innerHTML = "<p>載入資料時發生錯誤。</p>";
+        });
+
+    // 移除了原有的 convertToEmbed 函數，因為現在使用直接連結
+</script>
+
+</body>
+</html>
