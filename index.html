@@ -1,118 +1,137 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>桃園國際民俗舞社週四1204例會舞序</title>
+    <meta charset="UTF-8">
+    <!-- 加入此 meta 標籤以確保響應式設計在手機上正常運作 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>舞碼列表</title> <!-- 初始標題，將被 J2 內容覆蓋 -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 10px; /* 減少 padding 增加手機可用空間 */
+            background: #f5f5f5;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px; /* 調整標題下邊距 */
+            font-size: 1.5em; /* 調整標題字體大小以適應手機 */
+        }
+        .item {
+            background: white;
+            border-radius: 8px; /* 調整圓角 */
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .links-container {
+            margin-top: 10px;
+        }
+        .video-link {
+            display: block; /* 讓連結垂直排列 */
+            margin-bottom: 5px;
+            color: #0066cc;
+            text-decoration: none;
+            word-wrap: break-word; /* 防止長連結撐開佈局 */
+        }
+        .video-link:hover {
+            text-decoration: underline;
+        }
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
+        /* 媒體查詢：針對大螢幕設備調整佈局 (可選) */
+        @media (min-width: 600px) {
+            body {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .item {
+                padding: 20px;
+            }
+        }
 
-    /* 🔥 固定頂端標題區（Sticky Header） */
-    .header {
+    /* 固定頂部標題（從 J2 載入） */
+    #main-title {
         position: sticky;
         top: 0;
-        background: white;
-        padding: 15px;
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-        z-index: 1000;
-        border-bottom: 2px solid #ddd;
-    }
-
-    /* 搜尋框 */
-    #searchInput {
-        width: 90%;
-        margin: 15px auto;
-        display: block;
+        background: #f5f5f5;
         padding: 10px;
-        font-size: 18px;
+        z-index: 999;
+        border-bottom: 2px solid #ccc;
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 40px;
-    }
-
-    th, td {
-        padding: 10px;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-
-    /* YouTube 外框 */
-    .yt-container {
-        margin: 20px auto;
-        width: 90%;
-        max-width: 800px;
-    }
-
-    iframe {
-        width: 100%;
-        height: 450px;
-        border: none;
-    }
-</style>
+    </style>
 </head>
-
 <body>
 
-<!-- ★★★ 固定標題區 ★★★ -->
-<div class="header">
-    桃園國際民俗舞社週四1204例會舞序
-</div>
+<!-- 給 H1 一個 ID，方便 JavaScript 存取 -->
+<h1 id="main-title">資料載入中...</h1>
 
-<!-- 搜尋 -->
-<input type="text" id="searchInput" placeholder="輸入關鍵字搜尋舞序…" onkeyup="searchTable()" />
-
-<!-- YouTube 區塊（可自行更換影片） -->
-<div class="yt-container">
-    <iframe src="https://www.youtube.com/embed/你的影片ID" allowfullscreen></iframe>
-</div>
-
-<!-- 主表格區（可放你的資料） -->
-<table id="dataTable">
-    <thead>
-        <tr>
-            <th>序號</th>
-            <th>舞名</th>
-            <th>國別</th>
-            <th>影片</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>示例舞蹈 A</td>
-            <td>以色列</td>
-            <td><a href="https://youtu.be/xxxxx" target="_blank">觀看</a></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>示例舞蹈 B</td>
-            <td>羅馬尼亞</td>
-            <td><a href="https://youtu.be/yyyyy" target="_blank">觀看</a></td>
-        </tr>
-    </tbody>
-</table>
+<div id="content"></div>
 
 <script>
-/* 搜尋功能 */
-function searchTable() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const rows = document.querySelectorAll("#dataTable tbody tr");
+    // 正確的 CSV 來源網址
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4S7N1Tml3_IIF_Uda6AaJpH67BToztbEgqjsVwvVVbkjzPMZXqMST9ce3Bn4H-iUHegPsQeLQug9e/pub?gid=0&single=true&output=csv";
 
-    rows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        row.style.display = text.includes(input) ? "" : "none";
-    });
-}
+    const contentDiv = document.getElementById("content");
+    const titleH1 = document.getElementById("main-title");
+
+    // 🔸 正確取得 J2
+    // Google Sheet 支援使用 &range=J2 來指定儲存格
+    const J2_URL = CSV_URL + "&range=J2";
+
+    // 1. 取得 J2 標題
+    fetch(J2_URL)
+        .then(res => res.text())
+        .then(titleText => {
+            titleH1.textContent = titleText.trim() || "舞碼列表";
+        })
+        .catch(err => {
+            console.error("無法載入標題:", err);
+            titleH1.textContent = "舞碼列表載入失敗";
+        });
+
+    // 2. 載入舞碼列表
+    fetch(CSV_URL + "&t=" + new Date().getTime())
+        .then(res => res.text())
+        .then(csv => {
+            const rows = csv.split("\n");
+            contentDiv.innerHTML = "";
+
+            rows.slice(1, 41).forEach(row => {
+                const cols = row.split(",");
+
+                const seq = cols[1];
+                const name = cols[2];
+                const country = cols[3];
+                const type = cols[4];
+                const link1 = cols[5];
+                const link2 = cols[6];
+
+                const videoLink1HTML = link1 ? `<a href="${link1.trim()}" target="_blank" class="video-link">影片連結 1</a>` : "";
+                const videoLink2HTML = link2 ? `<a href="${link2.trim()}" target="_blank" class="video-link">影片連結 2</a>` : "";
+
+                if (seq && name) {
+                    contentDiv.innerHTML += `
+                        <div class="item">
+                            <h2>${seq.trim()} - ${name.trim()}</h2>
+                            <p><b>國家：</b>${country.trim()}</p>
+                            <p><b>舞蹈類型：</b>${type.trim()}</p>
+                            <div class="links-container">
+                                ${videoLink1HTML}
+                                ${videoLink2HTML}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        })
+        .catch(err => {
+            console.error("無法載入資料:", err);
+            contentDiv.innerHTML = "<p>載入資料時發生錯誤。</p>";
+        });
+
 </script>
 
 </body>
