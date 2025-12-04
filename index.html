@@ -60,48 +60,48 @@
 <div id="content"></div>
 
 <script>
-    // 您的 CSV 試算表網址
-    const CSV_URL = "docs.google.com";
+    // 正確的 CSV 來源網址
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4S7N1Tml3_IIF_Uda6AaJpH67BToztbEgqjsVwvVVbkjzPMZXqMST9ce3Bn4H-iUHegPsQeLQug9e/pub?gid=0&single=true&output=csv";
+
     const contentDiv = document.getElementById("content");
     const titleH1 = document.getElementById("main-title");
 
-    // 1. 取得 J2 儲存格內容作為標題
-    // 通過指定 range 參數僅獲取 J2 儲存格
-    const J2_URL = CSV_URL.replace('output=csv', 'range=J2&output=csv');
+    // 🔸 正確取得 J2
+    // Google Sheet 支援使用 &range=J2 來指定儲存格
+    const J2_URL = CSV_URL + "&range=J2";
+
+    // 1. 取得 J2 標題
     fetch(J2_URL)
         .then(res => res.text())
         .then(titleText => {
-            // 將 H1 標題更新為 J2 的內容
-            titleH1.textContent = titleText.trim() || "舞碼列表"; 
+            titleH1.textContent = titleText.trim() || "舞碼列表";
         })
         .catch(err => {
             console.error("無法載入標題:", err);
             titleH1.textContent = "舞碼列表載入失敗";
         });
 
-    // 2. 載入舞碼列表資料
+    // 2. 載入舞碼列表
     fetch(CSV_URL + "&t=" + new Date().getTime())
         .then(res => res.text())
         .then(csv => {
             const rows = csv.split("\n");
             contentDiv.innerHTML = "";
 
-            // 取第 1–40 列
             rows.slice(1, 41).forEach(row => {
                 const cols = row.split(",");
 
-                const seq = cols[1];     // B 舞序編號
-                const name = cols[2];    // C 舞碼名稱
-                const country = cols[3]; // D 國家名稱
-                const type = cols[4];    // E 舞蹈類型
-                const link1 = cols[5];   // F 影片1 URL
-                const link2 = cols[6];   // G 影片2 URL
+                const seq = cols[1];
+                const name = cols[2];
+                const country = cols[3];
+                const type = cols[4];
+                const link1 = cols[5];
+                const link2 = cols[6];
 
-                // 建立超連結元素，而不是 iframe
                 const videoLink1HTML = link1 ? `<a href="${link1.trim()}" target="_blank" class="video-link">影片連結 1</a>` : "";
                 const videoLink2HTML = link2 ? `<a href="${link2.trim()}" target="_blank" class="video-link">影片連結 2</a>` : "";
 
-                if (seq && name) { // 確保資料有效才顯示
+                if (seq && name) {
                     contentDiv.innerHTML += `
                         <div class="item">
                             <h2>${seq.trim()} - ${name.trim()}</h2>
@@ -117,11 +117,10 @@
             });
         })
         .catch(err => {
-            console.error("無法載入舞碼資料:", err);
+            console.error("無法載入資料:", err);
             contentDiv.innerHTML = "<p>載入資料時發生錯誤。</p>";
         });
 
-    // 移除了原有的 convertToEmbed 函數，因為現在使用直接連結
 </script>
 
 </body>
