@@ -2,140 +2,257 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <!-- 加入此 meta 標籤以確保響應式設計在手機上正常運作 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>桃園國際民俗舞社例會舞碼</title> <!-- 初始標題，將被 J2 內容覆蓋 -->
+    <title>桃園國際民俗舞社例會舞碼</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 10px; /* 減少 padding 增加手機可用空間 */
-            background: #f5f5f5;
-            margin: 0;
+        :root {
+            --primary-color: #0066cc;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #666666;
         }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* 固定頂部標題與篩選器 */
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+            padding: 15px 10px;
+            z-index: 1000;
+            border-bottom: 2px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
         h1 {
             text-align: center;
-            margin-bottom: 20px; /* 調整標題下邊距 */
-            font-size: 1.5em; /* 調整標題字體大小以適應手機 */
+            margin: 0 0 15px 0;
+            font-size: 1.4em;
+            color: var(--text-main);
         }
-        .item {
+
+        .filter-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        select {
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
             background: white;
-            border-radius: 8px; /* 調整圓角 */
+            font-size: 1em;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* 舞碼清單容器 */
+        #content {
             padding: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 舞碼單元格 */
+        .item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
         }
-        .links-container {
-            margin-top: 10px;
+
+        .item:active {
+            transform: scale(0.98);
         }
-        .video-link {
-            display: block; /* 讓連結垂直排列 */
+
+        .item-date {
+            font-size: 0.85em;
+            color: var(--text-sub);
             margin-bottom: 5px;
-            color: #0066cc;
+            display: block;
+        }
+
+        .item-title {
+            margin: 5px 0;
+            font-size: 1.25em;
+            color: var(--primary-color);
+        }
+
+        .item-info {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        .item-info b {
+            color: #444;
+        }
+
+        /* 連結按鈕 */
+        .links-container {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .video-link {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            padding: 10px;
+            background: #eef6ff;
+            color: var(--primary-color);
             text-decoration: none;
-            word-wrap: break-word; /* 防止長連結撐開佈局 */
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: bold;
+            border: 1px solid #d0e3ff;
         }
+
         .video-link:hover {
-            text-decoration: underline;
+            background: var(--primary-color);
+            color: white;
         }
 
-        /* 媒體查詢：針對大螢幕設備調整佈局 (可選) */
-        @media (min-width: 600px) {
-            body {
-                padding: 20px;
-            }
-            h1 {
-                font-size: 2em;
-            }
-            .item {
-                padding: 20px;
-            }
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-sub);
         }
-
-    /* 固定頂部標題（從 J2 載入） */
-    #main-title {
-        position: sticky;
-        top: 0;
-        background: #f5f5f5;
-        padding: 10px;
-        z-index: 999;
-        border-bottom: 2px solid #ccc;
-    }
-
     </style>
 </head>
 <body>
 
-<!-- 給 H1 一個 ID，方便 JavaScript 存取 -->
-<h1 id="main-title">資料載入中...</h1>
+<header>
+    <h1 id="main-title">桃園國際民俗舞社</h1>
+    <div class="filter-section">
+        <label for="date-filter"><b>🗓️ 選擇例會：</b></label>
+        <select id="date-filter">
+            <option value="all">全部日期</option>
+        </select>
+    </div>
+</header>
 
-<div id="content"></div>
+<div id="content">
+    <p class="no-data">資料載入中...</p>
+</div>
 
 <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vToq63ov94zuD2bBr2rSAymP934KIQA5I6i52AUQszCL3csyaWye2easCKplQzGKVlwSfV_J9VHeSpm/pub?output=csv";
+    const CSV_URL = "https://google.com";
 
     const contentDiv = document.getElementById("content");
-    const titleH1 = document.getElementById("main-title");
+    const dateFilter = document.getElementById("date-filter");
 
-    // 一次性抓取所有資料
+    let allData = [];
+
+    // 1. 抓取 CSV 資料
     fetch(CSV_URL + "&t=" + new Date().getTime())
         .then(res => res.text())
         .then(csv => {
-            // 使用簡單正則處理包含逗號的儲存格
-            const rows = csv.split(/\r?\n/).map(row => {
-                return row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
-            });
+            const rows = csv.split(/\r?\n/);
+            const thursdays = new Set();
 
-            // 假設 J2 的內容在 CSV 的第 2 列（Index 1），第 10 欄（Index 9）
-            // 視你的試算表結構調整座標
-            if (rows[1] && rows[1][9]) {
-                titleH1.textContent = rows[1][9].replace(/"/g, "");
-            } else {
-                titleH1.textContent = "桃園國際民俗舞社例會舞碼";
-            }
+            allData = rows.slice(1).map(row => {
+                // 處理包含引號與逗號的複雜 CSV 格式
+                const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+                if (cols.length < 5) return null;
 
-            contentDiv.innerHTML = "";
+                const clean = (val) => val ? val.replace(/"/g, "").trim() : "";
 
-            // 處理舞碼列表（從第 2 列開始，取前 40 筆）
-            rows.slice(1, 41).forEach(cols => {
-                if (cols.length < 5) return; // 跳過空行
+                const item = {
+                    name: clean(cols[0]),
+                    date: clean(cols[2]),       // C欄: 日期
+                    seq: clean(cols[3]),        // D欄: 排序
+                    country: clean(cols[4]),    // E欄: 國家/出處
+                    type: clean(cols[5]),       // F欄: 形式
+                    difficulty: clean(cols[6]), // G欄: 難度
+                    link1: clean(cols[7]),      // H欄: 影片1
+                    link2: clean(cols[8])       // I欄: 影片2
+                };
 
-                const name = cols[0]?.replace(/"/g, "");
-                const seq = cols[3]?.replace(/"/g, "");
-                const country = cols[4]?.replace(/"/g, "");
-                const type = cols[5]?.replace(/"/g, "");
-                const difficulty = cols[6]?.replace(/"/g, "");
-                const link1 = cols[7]?.replace(/"/g, "");
-                const link2 = cols[8]?.replace(/"/g, "");
-
-                if (seq && name) {
-                    const videoLink1HTML = link1 ? `<a href="${link1.trim()}" target="_blank" class="video-link">🎥 影片連結 1</a>` : "";
-                    const videoLink2HTML = link2 ? `<a href="${link2.trim()}" target="_blank" class="video-link">🎥 影片連結 2</a>` : "";
-
-                    contentDiv.innerHTML += `
-                        <div class="item">
-                            <h2 style="color: #2c3e50; font-size: 1.2em;">${seq} - ${name}</h2>
-                            <p><b>🌍 國家/編舞：</b>${country}</p>
-                            <p><b>💃 舞蹈類型：</b>${type}</p>
-                            <p><b>📊 難度：</b>${difficulty}</p>
-                            <div class="links-container">
-                                ${videoLink1HTML}
-                                ${videoLink2HTML}
-                            </div>
-                        </div>
-                    `;
+                // 只加入有效的週四日期 (getDay === 4)
+                if (item.date && item.date !== "#N/A" && item.seq !== "#N/A") {
+                    const d = new Date(item.date);
+                    if (!isNaN(d.getTime()) && d.getDay() === 4) {
+                        thursdays.add(item.date);
+                    }
+                    return item;
                 }
+                return null;
+            }).filter(item => item !== null);
+
+            // 2. 更新下拉選單 (由新到舊排序)
+            const sortedDates = Array.from(thursdays).sort().reverse();
+            
+            // 決定預設日期：選取最新的一個週四
+            const defaultDate = sortedDates.length > 0 ? sortedDates[0] : "all";
+
+            sortedDates.forEach(date => {
+                const option = document.createElement("option");
+                option.value = date;
+                option.textContent = date + " (週四)";
+                dateFilter.appendChild(option);
             });
+
+            // 3. 設定預設值並顯示
+            dateFilter.value = defaultDate;
+            renderData(defaultDate);
         })
         .catch(err => {
-            console.error("資料載入失敗:", err);
-            titleH1.textContent = "載入失敗";
-            contentDiv.innerHTML = "<p>請檢查網路連線或試算表發佈設定。</p>";
+            console.error(err);
+            contentDiv.innerHTML = `<div class="no-data">載入失敗，請確認試算表已發佈為 CSV。</div>`;
         });
+
+    // 渲染函數
+    function renderData(selectedDate) {
+        contentDiv.innerHTML = "";
+        
+        const filtered = allData.filter(item => {
+            return selectedDate === "all" || item.date === selectedDate;
+        });
+
+        if (filtered.length === 0) {
+            contentDiv.innerHTML = `<div class="no-data">目前沒有 ${selectedDate} 的舞碼資料。</div>`;
+            return;
+        }
+
+        filtered.forEach(item => {
+            const v1 = (item.link1 && item.link1.startsWith('http')) ? `<a href="${item.link1}" target="_blank" class="video-link">🎬 影片連結 1</a>` : "";
+            const v2 = (item.link2 && item.link2.startsWith('http')) ? `<a href="${item.link2}" target="_blank" class="video-link">🎬 影片連結 2</a>` : "";
+
+            contentDiv.innerHTML += `
+                <div class="item">
+                    <span class="item-date">📅 ${item.date} 週四例會</span>
+                    <h2 class="item-title">${item.seq}. ${item.name}</h2>
+                    <p class="item-info"><b>🌍 國家/出處：</b>${item.country}</p>
+                    <p class="item-info"><b>💃 形式：</b>${item.type} (難度: ${item.difficulty})</p>
+                    <div class="links-container">${v1} ${v2}</div>
+                </div>
+            `;
+        });
+        
+        // 渲染後滾動回頂部
+        window.scrollTo(0, 0);
+    }
+
+    // 監聽切換
+    dateFilter.addEventListener("change", (e) => {
+        renderData(e.target.value);
+    });
 </script>
 
 </body>
 </html>
-
-
-
-
