@@ -71,55 +71,52 @@
 <div id="content"></div>
 
 <script>
-    // 正確的 CSV 來源網址
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vToq63ov94zuD2bBr2rSAymP934KIQA5I6i52AUQszCL3csyaWye2easCKplQzGKVlwSfV_J9VHeSpm/pub?output=csv" ;
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vToq63ov94zuD2bBr2rSAymP934KIQA5I6i52AUQszCL3csyaWye2easCKplQzGKVlwSfV_J9VHeSpm/pub?output=csv";
 
     const contentDiv = document.getElementById("content");
     const titleH1 = document.getElementById("main-title");
 
-    // 🔸 正確取得 J2
-    // Google Sheet 支援使用 &range=J2 來指定儲存格
-    const J2_URL = CSV_URL + "&range=J2";
-
-    // 1. 取得 J2 標題
-    fetch(J2_URL)
-        .then(res => res.text())
-        .then(titleText => {
-            titleH1.textContent = titleText.trim() || "舞碼列表";
-        })
-        .catch(err => {
-            console.error("無法載入標題:", err);
-            titleH1.textContent = "舞碼列表載入失敗";
-        });
-
-    // 2. 載入舞碼列表
+    // 一次性抓取所有資料
     fetch(CSV_URL + "&t=" + new Date().getTime())
         .then(res => res.text())
         .then(csv => {
-            const rows = csv.split("\n");
+            // 使用簡單正則處理包含逗號的儲存格
+            const rows = csv.split(/\r?\n/).map(row => {
+                return row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+            });
+
+            // 假設 J2 的內容在 CSV 的第 2 列（Index 1），第 10 欄（Index 9）
+            // 視你的試算表結構調整座標
+            if (rows[1] && rows[1][9]) {
+                titleH1.textContent = rows[1][9].replace(/"/g, "");
+            } else {
+                titleH1.textContent = "桃園國際民俗舞社例會舞碼";
+            }
+
             contentDiv.innerHTML = "";
 
-            rows.slice(1, 41).forEach(row => {
-                const cols = row.split(",");
+            // 處理舞碼列表（從第 2 列開始，取前 40 筆）
+            rows.slice(1, 41).forEach(cols => {
+                if (cols.length < 5) return; // 跳過空行
 
-                const seq = cols[3];
-                const name = cols[0];
-                const country = cols[4];
-                const type = cols[5];
-                const difficulty = cols[6];
-                const link1 = cols[7];
-                const link2 = cols[8];
-
-                const videoLink1HTML = link1 ? `<a href="${link1.trim()}" target="_blank" class="video-link">影片連結 1</a>` : "";
-                const videoLink2HTML = link2 ? `<a href="${link2.trim()}" target="_blank" class="video-link">影片連結 2</a>` : "";
+                const name = cols[0]?.replace(/"/g, "");
+                const seq = cols[3]?.replace(/"/g, "");
+                const country = cols[4]?.replace(/"/g, "");
+                const type = cols[5]?.replace(/"/g, "");
+                const difficulty = cols[6]?.replace(/"/g, "");
+                const link1 = cols[7]?.replace(/"/g, "");
+                const link2 = cols[8]?.replace(/"/g, "");
 
                 if (seq && name) {
+                    const videoLink1HTML = link1 ? `<a href="${link1.trim()}" target="_blank" class="video-link">🎥 影片連結 1</a>` : "";
+                    const videoLink2HTML = link2 ? `<a href="${link2.trim()}" target="_blank" class="video-link">🎥 影片連結 2</a>` : "";
+
                     contentDiv.innerHTML += `
                         <div class="item">
-                            <h2>${seq.trim()} - ${name.trim()}</h2>
-                            <p><b>國家/編舞老師：</b>${country.trim()}</p>
-                            <p><b>舞蹈類型：</b>${type.trim()}</p>
-                            <p><b>難度：</b>${difficulty.trim()}</p>
+                            <h2 style="color: #2c3e50; font-size: 1.2em;">${seq} - ${name}</h2>
+                            <p><b>🌍 國家/編舞：</b>${country}</p>
+                            <p><b>💃 舞蹈類型：</b>${type}</p>
+                            <p><b>📊 難度：</b>${difficulty}</p>
                             <div class="links-container">
                                 ${videoLink1HTML}
                                 ${videoLink2HTML}
@@ -130,10 +127,10 @@
             });
         })
         .catch(err => {
-            console.error("無法載入資料:", err);
-            contentDiv.innerHTML = "<p>載入資料時發生錯誤。</p>";
+            console.error("資料載入失敗:", err);
+            titleH1.textContent = "載入失敗";
+            contentDiv.innerHTML = "<p>請檢查網路連線或試算表發佈設定。</p>";
         });
-
 </script>
 
 </body>
