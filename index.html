@@ -18,7 +18,6 @@
         body {
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
             background-color: var(--bg-color);
-            /* 加入微小的民族編織紋理感 */
             background-image: radial-gradient(#e5d1b8 0.5px, transparent 0.5px);
             background-size: 20px 20px;
             color: var(--text-main);
@@ -32,42 +31,67 @@
             top: 0;
             background: rgba(252, 248, 242, 0.95);
             backdrop-filter: blur(5px);
-            padding: 20px 10px;
+            padding: 0; /* 移除 header 預設內距 */
             z-index: 1000;
-            border-bottom: 3px double var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            position: relative;
             text-align: center;
-        }
-
-        h1 {
-            margin: 0 0 15px 0;
-            font-size: 1.5em;
-            color: var(--primary-color);
-            letter-spacing: 2px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
-        }
-
-        .filter-section {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            width: 100%;
+            min-height: 60px; /* 這裡控制了抬頭的最小總高度 */
+        }
+
+        .watermark {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.1;
+            transform: scale(0.65);
+            pointer-events: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.65);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 95%;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 0;
+            font-size: 1.25em;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            white-space: nowrap;
         }
 
         select {
-            padding: 10px 15px;
-            border-radius: 25px;
-            border: 2px solid var(--accent-color);
+            padding: 6px 10px;
+            border-radius: 20px;
+            border: 1.5px solid var(--accent-color);
             background: white;
-            font-size: 1em;
+            font-size: 0.9em;
             color: var(--text-main);
             outline: none;
             cursor: pointer;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+            max-width: 180px;
         }
 
         #content {
-            padding: 20px 15px;
+            padding: 15px;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -78,12 +102,11 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(139, 115, 85, 0.15);
-            border-left: var(--border-style); /* 模擬織帶裝飾 */
+            border-left: var(--border-style);
             position: relative;
             overflow: hidden;
         }
 
-        /* 裝飾性的小浮水印 */
         .item::after {
             content: "💃";
             position: absolute;
@@ -107,8 +130,6 @@
             margin: 5px 0 12px 0;
             font-size: 1.3em;
             color: var(--primary-color);
-            display: flex;
-            align-items: center;
         }
 
         .item-info {
@@ -163,37 +184,24 @@
 <body>
 
 <header>
-<!-- 容器：padding 設為 0，確保沒有任何額外留白 -->
-<div style="position: relative; text-align: center; padding: 0; display: flex; align-items: center; justify-content: center; width: 100%;">
-    
-    <!-- 浮水印：精確居中疊加 -->
-    <div style="position: absolute; z-index: 1; opacity: 0.1; transform: scale(0.6); pointer-events: none;">
-        <svg width="150" height="75" viewBox="0 0 200 100" fill="#a0522d" xmlns="http://w3.org">
-            <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
-            <circle cx="70" cy="25" r="10"/><path d="M60 40h20v45H60z"/><path d="M50 45l10-5M90 45l-10-5" stroke="#a0522d" stroke-width="5"/>
-            <circle cx="110" cy="30" r="10"/><path d="M100 45h20v40H100z"/><path d="M90 45l10 5M130 45l-10 5" stroke="#a0522d" stroke-width="5"/>
-            <circle cx="150" cy="25" r="10"/><path d="M140 40h20v45H140z"/><path d="M130 45l10-5M170 45l-10-5" stroke="#a0522d" stroke-width="5"/>
-        </svg>
-    </div>
+    <div class="header-container">
+        <!-- 浮水印 -->
+        <div class="watermark">
+            <svg width="200" height="100" viewBox="0 0 200 100" fill="#a0522d" xmlns="http://w3.org">
+                <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
+                <circle cx="70" cy="25" r="10"/><path d="M60 40h20v45H60z"/><path d="M50 45l10-5M90 45l-10-5" stroke="#a0522d" stroke-width="5"/>
+                <circle cx="110" cy="30" r="10"/><path d="M100 45h20v40H100z"/><path d="M90 45l10 5M130 45l-10 5" stroke="#a0522d" stroke-width="5"/>
+                <circle cx="150" cy="25" r="10"/><path d="M140 40h20v45H140z"/><path d="M130 45l10-5M170 45l-10-5" stroke="#a0522d" stroke-width="5"/>
+            </svg>
+        </div>
 
-    <!-- 文字與選單組合：使用 flex 並排 -->
-    <div style="position: relative; z-index: 2; display: flex; align-items: center; gap: 8px; margin: 10px 0;">
-        <!-- 標題：移除所有預設間距 -->
-        <h1 style="margin: 0; padding: 0; color: #8b4513; font-size: 1.3em; letter-spacing: 1px; line-height: 1;">
-            桃園國際民俗舞社
-        </h1>
-        
-        <!-- 單一日期選擇器：請確認只保留這一個 -->
-        <select style="margin: 0; padding: 4px 8px; border-radius: 15px; border: 1.5px solid #d2691e; color: #8b4513; background: #fff; cursor: pointer;">
-            <option>2026-05-14 (本週社課)</option>
-        </select>
-    </div>
-</div>
-
-    <div class="filter-section">
-        <select id="date-filter">
-            <!-- 由 JS 動態生成 -->
-        </select>
+        <!-- 內容區：文字與唯一的日期選單並排 -->
+        <div class="header-content">
+            <h1>桃園國際民俗舞社</h1>
+            <select id="date-filter">
+                <option value="">載入日期中...</option>
+            </select>
+        </div>
     </div>
 </header>
 
@@ -215,7 +223,6 @@
             const dateSet = new Set();
 
             allData = rows.slice(1).map(row => {
-                // 支援 CSV 包含逗號之邏輯
                 const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                 if (cols.length < 5) return null;
                 const clean = (val) => val ? val.replace(/^"|"$/g, "").trim() : "";
@@ -238,32 +245,26 @@
                 return null;
             }).filter(item => item !== null);
 
-            // 日期邏輯處理
             const sortedDates = Array.from(dateSet).sort().reverse();
             const todayStr = new Date().toISOString().split('T')[0];
-            
-            // 找到最接近今天的「未來日期」
-            const upcoming = sortedDates
-                .filter(d => d >= todayStr)
-                .sort(); // 取未來的最小值
-
+            const upcoming = sortedDates.filter(d => d >= todayStr).sort();
             const defaultDate = upcoming.length > 0 ? upcoming[0] : sortedDates[0];
 
-            // 生成選單選單
+            dateFilter.innerHTML = "";
+            
             const futureGroup = document.createElement("optgroup");
             futureGroup.label = "🌟 即將到來 / 今日";
             const pastGroup = document.createElement("optgroup");
-            pastGroup.label = "📜 歷史舞碼";
+            pastGroup.label = "📚 歷史例會";
 
             sortedDates.forEach(date => {
-                const option = document.createElement("option");
-                option.value = date;
-                option.textContent = date + (date === upcoming[0] ? " (本週社課)" : "");
-                
+                const opt = document.createElement("option");
+                opt.value = date;
+                opt.textContent = date === todayStr ? `${date} (今日社課)` : date;
                 if (date >= todayStr) {
-                    futureGroup.appendChild(option);
+                    futureGroup.appendChild(opt);
                 } else {
-                    pastGroup.appendChild(option);
+                    pastGroup.appendChild(opt);
                 }
             });
 
@@ -272,42 +273,36 @@
 
             dateFilter.value = defaultDate;
             renderData(defaultDate);
+
+            dateFilter.addEventListener("change", (e) => renderData(e.target.value));
         })
         .catch(err => {
-            contentDiv.innerHTML = `<div class="no-data">資料讀取失敗，請確認網路連線。</div>`;
+            contentDiv.innerHTML = `<div class="no-data">載入失敗，請檢查網路連線或 CSV 連結。</div>`;
         });
 
     function renderData(selectedDate) {
-        contentDiv.innerHTML = "";
-        const filtered = allData.filter(item => item.date === selectedDate);
-
+        const filtered = allData.filter(d => d.date === selectedDate)
+                                .sort((a, b) => parseInt(a.seq) - parseInt(b.seq));
+        
         if (filtered.length === 0) {
-            contentDiv.innerHTML = `<div class="no-data">找不到 ${selectedDate} 的舞碼。</div>`;
+            contentDiv.innerHTML = `<div class="no-data">此日期暫無舞碼資訊。</div>`;
             return;
         }
 
-        filtered.forEach(item => {
-            const v1 = (item.link1 && item.link1.startsWith('http')) ? `<a href="${item.link1}" target="_blank" class="video-link">📺 參考影片 1</a>` : "";
-            const v2 = (item.link2 && item.link2.startsWith('http')) ? `<a href="${item.link2}" target="_blank" class="video-link">📺 參考影片 2</a>` : "";
-
-            contentDiv.innerHTML += `
-                <div class="item">
-                    <span class="item-date">📅 ${item.date} 例會</span>
-                    <h2 class="item-title">${item.seq}. ${item.name}</h2>
-                    <p class="item-info"><b>🌏 國家/出處：</b>${item.country}</p>
-                    <p class="item-info"><b>💃 舞種形式：</b>${item.type} (難度: ${item.difficulty})</p>
-                    <div class="links-container">${v1} ${v2}</div>
+        contentDiv.innerHTML = filtered.map(item => `
+            <div class="item">
+                <span class="item-date">${item.date} 例會 - 第 ${item.seq} 首</span>
+                <div class="item-title"><b>${item.seq}. ${item.name}</b></div>
+                <div class="item-info">🌍 <b>國家/出處：</b>${item.country}</div>
+                <div class="item-info">💃 <b>舞種形式：</b>${item.type} (難度: ${item.difficulty})</div>
+                <div class="links-container">
+                    ${item.link1 ? `<a href="${item.link1}" target="_blank" class="video-link">📺 參考影片 1</a>` : ''}
+                    ${item.link2 ? `<a href="${item.link2}" target="_blank" class="video-link">📺 參考影片 2</a>` : ''}
                 </div>
-            `;
-        });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+            </div>
+        `).join("");
     }
-
-    dateFilter.addEventListener("change", (e) => renderData(e.target.value));
 </script>
 
 </body>
 </html>
-
-
- 
