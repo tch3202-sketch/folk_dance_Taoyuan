@@ -166,8 +166,11 @@
     <div style="position: relative; text-align: center; padding: 40px 0; display: flex; align-items: center; justify-content: center; min-height: 100px;">
     
     <!-- 這裡是用作浮水印的向量剪影 -->
-    <div style="position: absolute; z-index: 1; opacity: 0.15; transform: scale(1.5);">
-        <svg width="200" height="100" viewBox="0 0 200 100" fill="#a0522d" xmlns="http://w3.org">
+    <div style="position: relative; text-align: center; padding: 15px 0; display: flex; align-items: center; justify-content: center; min-height: 50px;">
+    
+    <!-- 縮小後的浮水印剪影 -->
+    <div style="position: absolute; z-index: 1; opacity: 0.12; transform: scale(0.8);">
+        <svg width="150" height="75" viewBox="0 0 200 100" fill="#a0522d" xmlns="http://w3.org">
             <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
             <circle cx="70" cy="25" r="10"/><path d="M60 40h20v45H60z"/><path d="M50 45l10-5M90 45l-10-5" stroke="#a0522d" stroke-width="5"/>
             <circle cx="110" cy="30" r="10"/><path d="M100 45h20v40H100z"/><path d="M90 45l10 5M130 45l-10 5" stroke="#a0522d" stroke-width="5"/>
@@ -175,11 +178,12 @@
         </svg>
     </div>
 
-    <!-- 這裡是大標題文字 -->
-    <h1 style="position: relative; z-index: 2; margin: 0; color: #8b4513; font-size: 2.5em; letter-spacing: 2px;">
+    <!-- 縮小後的標題文字 -->
+    <h1 style="position: relative; z-index: 2; margin: 0; color: #8b4513; font-size: 1.5em; letter-spacing: 1px;">
         桃園國際民俗舞社
     </h1>
 </div>
+
 
 
     <div class="filter-section">
