@@ -163,13 +163,11 @@
 <body>
 
 <header>
-    <div style="position: relative; text-align: center; padding: 40px 0; display: flex; align-items: center; justify-content: center; min-height: 100px;">
+<!-- 1. 將 padding 縮減至極致 (5px)，並移除 min-height -->
+<div style="position: relative; text-align: center; padding: 5px 0; display: flex; align-items: center; justify-content: center; width: 100%;">
     
-    <!-- 這裡是用作浮水印的向量剪影 -->
-    <div style="position: relative; text-align: center; padding: 15px 0; display: flex; align-items: center; justify-content: center; min-height: 50px;">
-    
-    <!-- 縮小後的浮水印剪影 -->
-    <div style="position: absolute; z-index: 1; opacity: 0.12; transform: scale(0.8);">
+    <!-- 2. 浮水印：位置微調以配合並排佈局 -->
+    <div style="position: absolute; z-index: 1; opacity: 0.12; transform: scale(0.7); left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.7);">
         <svg width="150" height="75" viewBox="0 0 200 100" fill="#a0522d" xmlns="http://w3.org">
             <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
             <circle cx="70" cy="25" r="10"/><path d="M60 40h20v45H60z"/><path d="M50 45l10-5M90 45l-10-5" stroke="#a0522d" stroke-width="5"/>
@@ -178,11 +176,19 @@
         </svg>
     </div>
 
-    <!-- 縮小後的標題文字 -->
-    <h1 style="position: relative; z-index: 2; margin: 0; color: #8b4513; font-size: 1.5em; letter-spacing: 1px;">
-        桃園國際民俗舞社
-    </h1>
+    <!-- 3. 文字內容：強制移除 margin 並與選單水平對齊 -->
+    <div style="position: relative; z-index: 2; display: flex; align-items: center; gap: 10px;">
+        <h1 style="margin: 0; color: #8b4513; font-size: 1.4em; letter-spacing: 1px; line-height: 1;">
+            桃園國際民俗舞社
+        </h1>
+        
+        <!-- 這裡放你的日期選擇代碼 (不需要變更原本尺寸) -->
+        <select style="margin: 0; padding: 5px;">
+            <option>2026-05-14 (本週社課)</option>
+        </select>
+    </div>
 </div>
+
 
 
 
