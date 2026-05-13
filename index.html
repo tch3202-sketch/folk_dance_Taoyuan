@@ -189,11 +189,11 @@
             background-color: #fffaf0;
             width: 100%;
             margin: 0;
-            padding: 35px 0 25px 0; /* 增加頂部留白，給位於文字上方的小人身體留出空間 */
+            padding: 30px 0 20px 0; /* 調整上下留白，給小人上方留出空間 */
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 2px solid #a0522d;
+            border-bottom: 3px solid #a0522d; /* 底部橘色粗線 */
         }
 
         /* 關鍵包裝層：高度會被文字完全撐開 */
@@ -209,17 +209,17 @@
             /* 1. 讓浮水印容器的底邊，完美貼齊文字包裝層的底邊 */
             bottom: 0; 
             left: 50%;
-            /* 2. 只做水平置中，垂直方向完全不向下位移，讓腳底死死鎖在文字底線 */
-            transform: translateX(-50%); 
+            /* 2. 只做水平置中，微調 -1px 消除預設行高留白，確保小人身體底部與文字底緣完全重合 */
+            transform: translate(-50%, -1px); 
             width: 110%;
             display: flex;
             justify-content: center;
-            opacity: 0.12; /* 還原截圖的淡棕色透明度 */
+            opacity: 0.12; /* 原圖淡淡的浮水印質感 */
             pointer-events: none;
-            z-index: 1; /* 放在文字底層，讓小人身體當作文字背襯 */
+            z-index: 1; /* 放在文字底層，讓頭部與手部在文字後方 */
         }
 
-        /* 確保 SVG 內部沒有任何下方空白留白 */
+        /* 確保 SVG 內部沒有任何下方額外留白 */
         .watermark svg {
             display: block;
             margin: 0;
@@ -227,7 +227,7 @@
 
         .header-content {
             position: relative;
-            z-index: 2; /* 確保文字在小人上方，方便看清對齊線 */
+            z-index: 2; /* 確保文字在小人上方，看清對齊效果 */
             display: flex;
             align-items: center;
             gap: 12px;
@@ -236,28 +236,29 @@
         h1 {
             margin: 0;
             color: #a0522d;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             white-space: nowrap;
+            letter-spacing: 1px;
             /* 3. 強制行高為 1，徹底消除文字下方的隱形空白，確保底邊絕對精準 */
             line-height: 1; 
         }
 
         #date-filter {
-            padding: 4px 8px;
-            border: 1px solid #a0522d;
-            border-radius: 5px;
-            color: #a0522d;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 0.95rem;
+            padding: 3px 20px 3px 8px;
+            border: 1px solid #bc8f8f;
+            border-radius: 4px;
+            color: #555555;
+            background: #ffffff;
+            font-size: 0.9rem;
         }
     </style>
 
     <div class="header-container">
         <div class="text-wrapper">
-            <!-- 浮水印：小人的腳底現在會百分之百貼住文字的下緣線 -->
+            <!-- 浮水印：小人身體的底部現在會死死貼緊在文字的下緣處 -->
             <div class="watermark">
-                <svg width="350" height="55" viewBox="0 0 350 75" fill="#a0522d" xmlns="w3.org">
-                    <!-- 重新校正過 Y 軸的 8 人圖案，確保腳部切齊 SVG 畫布的最底邊 (y=75) -->
+                <svg width="320" height="50" viewBox="0 0 350 75" fill="#a0522d" xmlns="w3.org">
+                    <!-- 重新校正過 Y 軸的 8 人圖案，確保身體底部切齊 SVG 畫布的最底邊 (y=75) -->
                     <circle cx="30" cy="15" r="10"/><path d="M20 30h20v45H20z"/><path d="M10 35l10 10M50 35l-10 10" stroke="#a0522d" stroke-width="5"/>
                     <circle cx="70" cy="10" r="10"/><path d="M60 25h20v50H60z"/><path d="M50 30l10-5M90 30l-10-5" stroke="#a0522d" stroke-width="5"/>
                     <circle cx="110" cy="15" r="10"/><path d="M100 30h20v45H100z"/><path d="M90 35l10 5M130 35l-10 5" stroke="#a0522d" stroke-width="5"/>
