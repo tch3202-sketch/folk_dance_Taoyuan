@@ -189,7 +189,7 @@
             background-color: #fffaf0;
             width: 100%;
             margin: 0;
-            padding: 35px 0 25px 0; /* 調整上下留白，給小人上方留出空間 */
+            padding: 35px 0 25px 0; /* 增加頂部留白，給位於文字上方的小人身體留出空間 */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -209,14 +209,14 @@
             /* 1. 讓浮水印容器的底邊，完美貼齊文字包裝層的底邊 */
             bottom: 0; 
             left: 50%;
-            /* 2. 只做水平置中，垂直方向完全不向下位移 */
+            /* 2. 只做水平置中，垂直方向完全不向下位移，讓腳底死死鎖在文字底線 */
             transform: translateX(-50%); 
             width: 110%;
             display: flex;
             justify-content: center;
-            opacity: 0.15;
+            opacity: 0.12; /* 還原截圖的淡棕色透明度 */
             pointer-events: none;
-            z-index: 1; /* 放在文字底層 */
+            z-index: 1; /* 放在文字底層，讓小人身體當作文字背襯 */
         }
 
         /* 確保 SVG 內部沒有任何下方空白留白 */
@@ -238,7 +238,7 @@
             color: #a0522d;
             font-size: 1.6rem;
             white-space: nowrap;
-            /* 3. 強制行高為 1，徹底消除文字下方的隱形空白間距，確保底邊絕對精準 */
+            /* 3. 強制行高為 1，徹底消除文字下方的隱形空白，確保底邊絕對精準 */
             line-height: 1; 
         }
 
@@ -254,7 +254,7 @@
 
     <div class="header-container">
         <div class="text-wrapper">
-            <!-- 浮水印：小人的腳底現在會死死貼住文字的下緣線 -->
+            <!-- 浮水印：小人的腳底現在會百分之百貼住文字的下緣線 -->
             <div class="watermark">
                 <svg width="350" height="55" viewBox="0 0 350 75" fill="#a0522d" xmlns="w3.org">
                     <!-- 重新校正過 Y 軸的 8 人圖案，確保腳部切齊 SVG 畫布的最底邊 (y=75) -->
