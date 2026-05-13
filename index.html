@@ -183,77 +183,84 @@
 </head>
 <body>
 
-<header>
+<header style="width: 100%;">
     <style>
+        /* 1. 讓容器占滿整個螢幕寬度，並移除邊距 */
         .header-container {
             position: relative;
             background-color: #fffaf0;
-            padding: 15px;
+            width: 100%; /* 強制占滿 */
+            margin: 0;
+            padding: 20px 0; /* 上下留白，左右不留 */
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 80px;
+            /* 加上底部邊框作為分隔線，並確保它占滿 */
+            border-bottom: 2px solid #a0522d; 
         }
 
-        /* 浮水印層：針對手機優化寬度 */
+        /* 2. 浮水印寬度設為 100%，並使用預設置中 */
         .watermark {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 95%; /* 手機版讓它佔滿一點，視覺較平衡 */
-            max-width: 400px; /* 電腦版則限制最大寬度 */
-            opacity: 0.15;
+            transform: translate(-50%, -35%);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            opacity: 0.12; /* 稍微再淡化一點更顯質感 */
             pointer-events: none;
             z-index: 1;
         }
 
+        /* 3. 確保文字與選單真正置中 */
         .header-content {
             position: relative;
             z-index: 2;
             display: flex;
-            flex-wrap: wrap; /* 手機版如果太擠會自動換行 */
+            flex-direction: row; /* 強制橫向排隊 */
             justify-content: center;
             align-items: center;
             gap: 10px;
+            width: 90%; /* 限制文字內容不要貼邊 */
         }
 
         h1 {
             margin: 0;
             color: #a0522d;
-            font-size: 1.3rem; /* 稍微縮小字體以適應手機 */
+            font-size: 1.4rem;
             white-space: nowrap;
         }
 
         #date-filter {
-            padding: 4px;
+            padding: 4px 8px;
             border: 1px solid #a0522d;
             border-radius: 5px;
             color: #a0522d;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        /* 針對極小螢幕的微調 */
+        @media (max-width: 360px) {
+            h1 { font-size: 1.1rem; }
+            #date-filter { font-size: 0.8rem; }
         }
     </style>
 
     <div class="header-container">
-        <!-- 浮水印：調整為 8 人 -->
+        <!-- 浮水印：8人 -->
         <div class="watermark">
-            <svg width="100%" height="80" viewBox="0 0 350 100" fill="#a0522d" xmlns="http://w3.org">
-                <!-- 1 -->
+            <svg width="350" height="80" viewBox="0 0 350 100" fill="#a0522d" xmlns="http://w3.org">
+                <!-- (此處維持您原本的 8 人 SVG 內容) -->
                 <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
-                <!-- 2 -->
                 <circle cx="70" cy="25" r="10"/><path d="M60 40h20v45H60z"/><path d="M50 45l10-5M90 45l-10-5" stroke="#a0522d" stroke-width="5"/>
-                <!-- 3 -->
                 <circle cx="110" cy="30" r="10"/><path d="M100 45h20v40H100z"/><path d="M90 45l10 5M130 45l-10 5" stroke="#a0522d" stroke-width="5"/>
-                <!-- 4 -->
                 <circle cx="150" cy="25" r="10"/><path d="M140 40h20v45H140z"/><path d="M130 45l10-5M170 45l-10-5" stroke="#a0522d" stroke-width="5"/>
-                <!-- 5 -->
                 <circle cx="190" cy="30" r="10"/><path d="M180 45h20v40H180z"/><path d="M170 45l10 5M210 45l-10 5" stroke="#a0522d" stroke-width="5"/>
-                <!-- 6 -->
                 <circle cx="230" cy="25" r="10"/><path d="M220 40h20v45H220z"/><path d="M210 45l10-5M250 45l-10-5" stroke="#a0522d" stroke-width="5"/>
-                <!-- 7 -->
                 <circle cx="270" cy="30" r="10"/><path d="M260 45h20v40H260z"/><path d="M250 45l10 5M290 45l-10 5" stroke="#a0522d" stroke-width="5"/>
-                <!-- 8 -->
                 <circle cx="310" cy="25" r="10"/><path d="M300 40h20v45H300z"/><path d="M290 45l10-5M330 45l-10-5" stroke="#a0522d" stroke-width="5"/>
             </svg>
         </div>
@@ -266,6 +273,7 @@
         </div>
     </div>
 </header>
+
 
 
 
