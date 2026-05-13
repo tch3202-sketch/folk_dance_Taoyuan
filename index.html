@@ -187,55 +187,58 @@
     <style>
         .header-container {
             position: relative;
-            background-color: #fffaf0; /* 淡淡的底色 */
-            padding: 20px;
+            background-color: #fffaf0;
+            padding: 15px;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100px;
+            min-height: 80px;
         }
 
-        /* 浮水印層：置中並淡化 */
+        /* 浮水印層：針對手機優化寬度 */
         .watermark {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%; /* 控制 10 個人在畫面中的寬度佔比 */
-            opacity: 0.15; /* 降低透明度，避免干擾文字 */
-            pointer-events: none; /* 確保不會擋到下拉選單點擊 */
+            width: 95%; /* 手機版讓它佔滿一點，視覺較平衡 */
+            max-width: 400px; /* 電腦版則限制最大寬度 */
+            opacity: 0.15;
+            pointer-events: none;
             z-index: 1;
         }
 
-        /* 內容層：確保在浮水印上方 */
         .header-content {
             position: relative;
             z-index: 2;
             display: flex;
+            flex-wrap: wrap; /* 手機版如果太擠會自動換行 */
+            justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         h1 {
             margin: 0;
             color: #a0522d;
-            font-size: 1.5rem;
+            font-size: 1.3rem; /* 稍微縮小字體以適應手機 */
+            white-space: nowrap;
         }
 
         #date-filter {
-            padding: 5px;
+            padding: 4px;
             border: 1px solid #a0522d;
             border-radius: 5px;
             color: #a0522d;
+            background: rgba(255, 255, 255, 0.8);
         }
     </style>
 
     <div class="header-container">
-        <!-- 浮水印：10 人牽手圖案 -->
+        <!-- 浮水印：調整為 8 人 -->
         <div class="watermark">
-            <svg width="100%" height="100" viewBox="0 0 450 100" fill="#a0522d" xmlns="http://w3.org">
-                <!-- 人物序列 1-10，維持高低律動 -->
+            <svg width="100%" height="80" viewBox="0 0 350 100" fill="#a0522d" xmlns="http://w3.org">
                 <!-- 1 -->
                 <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
                 <!-- 2 -->
@@ -252,14 +255,9 @@
                 <circle cx="270" cy="30" r="10"/><path d="M260 45h20v40H260z"/><path d="M250 45l10 5M290 45l-10 5" stroke="#a0522d" stroke-width="5"/>
                 <!-- 8 -->
                 <circle cx="310" cy="25" r="10"/><path d="M300 40h20v45H300z"/><path d="M290 45l10-5M330 45l-10-5" stroke="#a0522d" stroke-width="5"/>
-                <!-- 9 -->
-                <circle cx="350" cy="30" r="10"/><path d="M340 45h20v40H340z"/><path d="M330 45l10 5M370 45l-10 5" stroke="#a0522d" stroke-width="5"/>
-                <!-- 10 -->
-                <circle cx="390" cy="25" r="10"/><path d="M380 40h20v45H380z"/><path d="M370 45l10-5M410 45l-10-5" stroke="#a0522d" stroke-width="5"/>
             </svg>
         </div>
 
-        <!-- 內容區 -->
         <div class="header-content">
             <h1>桃園國際民俗舞社</h1>
             <select id="date-filter">
@@ -268,6 +266,7 @@
         </div>
     </div>
 </header>
+
 
 
 <div id="content">
