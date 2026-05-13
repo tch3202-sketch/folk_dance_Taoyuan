@@ -189,14 +189,14 @@
             background-color: #fffaf0;
             width: 100%;
             margin: 0;
-            padding: 40px 0; /* 增加上下留白 */
+            padding: 35px 0 25px 0; /* 調整上下留白，給小人上方留出空間 */
             display: flex;
             justify-content: center;
             align-items: center;
             border-bottom: 2px solid #a0522d;
         }
 
-        /* 關鍵：建立一個與文字同高的包裝層 */
+        /* 關鍵包裝層：高度會被文字完全撐開 */
         .text-wrapper {
             position: relative;
             display: inline-flex;
@@ -206,21 +206,28 @@
 
         .watermark {
             position: absolute;
-            /* 讓浮水印容器的底部對齊文字包裝層底部 */
+            /* 1. 讓浮水印容器的底邊，完美貼齊文字包裝層的底邊 */
             bottom: 0; 
             left: 50%;
-            transform: translateX(-50%);
-            width: 120%; /* 稍微寬於文字，營造環繞感 */
+            /* 2. 只做水平置中，垂直方向完全不向下位移 */
+            transform: translateX(-50%); 
+            width: 110%;
             display: flex;
             justify-content: center;
             opacity: 0.15;
             pointer-events: none;
-            z-index: 1;
+            z-index: 1; /* 放在文字底層 */
+        }
+
+        /* 確保 SVG 內部沒有任何下方空白留白 */
+        .watermark svg {
+            display: block;
+            margin: 0;
         }
 
         .header-content {
             position: relative;
-            z-index: 2; /* 確保文字在小人上方 */
+            z-index: 2; /* 確保文字在小人上方，方便看清對齊線 */
             display: flex;
             align-items: center;
             gap: 12px;
@@ -231,7 +238,8 @@
             color: #a0522d;
             font-size: 1.6rem;
             white-space: nowrap;
-            line-height: 1; /* 移除行高干擾，讓底部更精準 */
+            /* 3. 強制行高為 1，徹底消除文字下方的隱形空白間距，確保底邊絕對精準 */
+            line-height: 1; 
         }
 
         #date-filter {
@@ -240,23 +248,24 @@
             border-radius: 5px;
             color: #a0522d;
             background: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
         }
     </style>
 
     <div class="header-container">
         <div class="text-wrapper">
-            <!-- 浮水印現在相對於文字定位 -->
+            <!-- 浮水印：小人的腳底現在會死死貼住文字的下緣線 -->
             <div class="watermark">
-                <svg width="400" height="60" viewBox="0 0 350 80" fill="#a0522d" xmlns="http://w3.org">
-                    <!-- 第一至八人：腳部在 SVG 底部 (y=75~80 附近) -->
-                    <circle cx="30" cy="20" r="10"/><path d="M20 35h20v40H20z"/><path d="M10 35l10 10M50 35l-10 10" stroke="#a0522d" stroke-width="5"/>
-                    <circle cx="70" cy="15" r="10"/><path d="M60 30h20v45H60z"/><path d="M50 35l10-5M90 35l-10-5" stroke="#a0522d" stroke-width="5"/>
-                    <circle cx="110" cy="20" r="10"/><path d="M100 35h20v40H100z"/><path d="M90 35l10 5M130 35l-10 5" stroke="#a0522d" stroke-width="5"/>
-                    <circle cx="150" cy="15" r="10"/><path d="M140 30h20v45H140z"/><path d="M130 35l10-5M170 35l-10-5" stroke="#a0522d" stroke-width="5"/>
-                    <circle cx="190" cy="20" r="10"/><path d="M180 35h20v40H180z"/><path d="M170 35l10 5M210 35l-10 5" stroke="#a0522d" stroke-width="5"/>
-                    <circle cx="230" cy="15" r="10"/><path d="M220 30h20v45H220z"/><path d="M210 35l10-5M250 35l-10-5" stroke="#a0522d" stroke-width="5"/>
-                    <circle cx="270" cy="20" r="10"/><path d="M260 35h20v40H260z"/><path d="M250 35l10 5M290 35l-10 5" stroke="#a0522d" stroke-width="5"/>
-                    <circle cx="310" cy="15" r="10"/><path d="M300 30h20v45H300z"/><path d="M290 35l10-5M330 35l-10-5" stroke="#a0522d" stroke-width="5"/>
+                <svg width="350" height="55" viewBox="0 0 350 75" fill="#a0522d" xmlns="w3.org">
+                    <!-- 重新校正過 Y 軸的 8 人圖案，確保腳部切齊 SVG 畫布的最底邊 (y=75) -->
+                    <circle cx="30" cy="15" r="10"/><path d="M20 30h20v45H20z"/><path d="M10 35l10 10M50 35l-10 10" stroke="#a0522d" stroke-width="5"/>
+                    <circle cx="70" cy="10" r="10"/><path d="M60 25h20v50H60z"/><path d="M50 30l10-5M90 30l-10-5" stroke="#a0522d" stroke-width="5"/>
+                    <circle cx="110" cy="15" r="10"/><path d="M100 30h20v45H100z"/><path d="M90 35l10 5M130 35l-10 5" stroke="#a0522d" stroke-width="5"/>
+                    <circle cx="150" cy="10" r="10"/><path d="M140 25h20v50H140z"/><path d="M130 30l10-5M170 30l-10-5" stroke="#a0522d" stroke-width="5"/>
+                    <circle cx="190" cy="15" r="10"/><path d="M180 30h20v45H180z"/><path d="M170 35l10 5M210 35l-10 5" stroke="#a0522d" stroke-width="5"/>
+                    <circle cx="230" cy="10" r="10"/><path d="M220 25h20v50H220z"/><path d="M210 30l10-5M250 30l-10-5" stroke="#a0522d" stroke-width="5"/>
+                    <circle cx="270" cy="15" r="10"/><path d="M260 30h20v45H260z"/><path d="M250 35l10 5M290 35l-10 5" stroke="#a0522d" stroke-width="5"/>
+                    <circle cx="310" cy="10" r="10"/><path d="M300 25h20v50H300z"/><path d="M290 30l10-5M330 30l-10-5" stroke="#a0522d" stroke-width="5"/>
                 </svg>
             </div>
 
