@@ -229,6 +229,7 @@
                 
                 const item = {
                     name: clean(cols[0]),
+                    ps: clean(cols[9]),
                     date: clean(cols[2]),
                     seq: clean(cols[3]),
                     country: clean(cols[4]),
@@ -292,7 +293,7 @@
         contentDiv.innerHTML = filtered.map(item => `
             <div class="item">
                 <span class="item-date">${item.date} 例會 - 第 ${item.seq} 首</span>
-                <div class="item-title"><b>${item.seq}. ${item.name}</b></div>
+                <div class="item-title"><b>${item.seq}. ${item.name} ${item.ps}</b></div>
                 <div class="item-info">🌍 <b>國家/出處：</b>${item.country}</div>
                 <div class="item-info">💃 <b>舞種形式：</b>${item.type} (難度: ${item.difficulty})</div>
                 <div class="links-container">
