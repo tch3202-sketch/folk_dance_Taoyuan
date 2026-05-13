@@ -189,14 +189,14 @@
             background-color: #fffaf0;
             width: 100%;
             margin: 0;
-            padding: 35px 0 25px 0; /* 控制整個頁首的上下留白 */
+            padding: 35px 0 25px 0; /* 增加上方留白，留空間給位於文字後方的小人上半身 */
             display: flex;
             justify-content: center;
             align-items: center;
             border-bottom: 3px solid #a0522d; /* 最下方的咖啡色粗線 */
         }
 
-        /* 關鍵包裝層：其高度會被文字完全撐開，成為完美的對齊基準線 */
+        /* 關鍵包裝層：高度會被文字完全撐開 */
         .text-wrapper {
             position: relative;
             display: inline-flex;
@@ -206,17 +206,17 @@
 
         .watermark {
             position: absolute;
-            /* 1. 讓浮水印容器的底部，完美貼齊文字包裝層的底邊 */
+            /* 1. 讓浮水印容器的底邊，完美貼齊文字包裝層的底邊 */
             bottom: 0; 
             left: 50%;
-            /* 2. 水平置中，垂直方向完全不向下溢出，讓長方形末端死死鎖在文字底線 */
+            /* 2. 只做水平置中，垂直方向完全不位移，確保長方形最底部死死鎖在文字底線上 */
             transform: translateX(-50%); 
             width: 110%;
             display: flex;
             justify-content: center;
-            opacity: 0.12; /* 原圖淡淡的半透明質感 */
+            opacity: 0.12; /* 原圖淡淡的浮水印質感 */
             pointer-events: none;
-            z-index: 1; /* 放在底層，讓小人頭部與雙手成為文字的背襯 */
+            z-index: 1; /* 關鍵：放在底層（1），讓小人成為文字（2）的正後方背景 */
         }
 
         /* 確保 SVG 內部沒有任何下方的額外留白 */
@@ -227,7 +227,7 @@
 
         .header-content {
             position: relative;
-            z-index: 2; /* 確保文字在小人上方，維持清晰度 */
+            z-index: 2; /* 確保文字在最上層，這樣小人就會隱約襯在文字後面 */
             display: flex;
             align-items: center;
             gap: 12px;
@@ -239,7 +239,7 @@
             font-size: 1.5rem;
             white-space: nowrap;
             letter-spacing: 1px;
-            /* 3. 強制行高為 1，徹底消除文字下方的隱形行距空白，確保底緣絕對精準 */
+            /* 3. 強制行高為 1，徹底消除中文字型下方的隱形空白，確保底緣絕對精準 */
             line-height: 1; 
         }
 
@@ -255,10 +255,10 @@
 
     <div class="header-container">
         <div class="text-wrapper">
-            <!-- 浮水印：小人長方形的底部現在會百分之百貼緊在文字的下緣處 -->
+            <!-- 浮水印：頭在上、身體在下，且長方形最底部死死貼緊在文字的下緣處 -->
             <div class="watermark">
                 <svg width="320" height="50" viewBox="0 0 350 75" fill="#a0522d" xmlns="w3.org">
-                    <!-- 重新校正過的所有小人元件，身體長方形的底部切齊 SVG 畫布的最底邊 (y=75) -->
+                    <!-- 重新校正過的所有小人元件，身體長方形的底部完全切齊 SVG 畫布的最底邊 (y=75) -->
                     <circle cx="30" cy="15" r="10"/><path d="M20 30h20v45H20z"/><path d="M10 35l10 10M50 35l-10 10" stroke="#a0522d" stroke-width="5"/>
                     <circle cx="70" cy="10" r="10"/><path d="M60 25h20v50H60z"/><path d="M50 30l10-5M90 30l-10-5" stroke="#a0522d" stroke-width="5"/>
                     <circle cx="110" cy="15" r="10"/><path d="M100 30h20v45H100z"/><path d="M90 35l10 5M130 35l-10 5" stroke="#a0522d" stroke-width="5"/>
@@ -279,7 +279,6 @@
         </div>
     </div>
 </header>
-
 
 
 <div id="content">
