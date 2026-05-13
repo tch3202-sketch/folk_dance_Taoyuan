@@ -31,7 +31,7 @@
             top: 0;
             background: rgba(252, 248, 242, 0.95);
             backdrop-filter: blur(5px);
-            padding: 0; 
+            padding: 0; /* 移除 header 預設內距 */
             z-index: 1000;
             border-bottom: 2px solid var(--accent-color);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -39,74 +39,55 @@
 
         .header-container {
             position: relative;
-            background-color: #fffaf0;
-            width: 100%;
-            margin: 0;
-            padding: 40px 0 15px 0; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-bottom: 3px solid #a0522d; 
-            box-sizing: border-box;
-        }
-
-        .header-content {
+            text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
             width: 100%;
-            padding: 0 20px; 
-            box-sizing: border-box;
-            flex-wrap: wrap; 
-        }
-
-        .title-wrapper {
-            position: relative; 
-            display: inline-block;
+            min-height: 60px; /* 這裡控制了抬頭的最小總高度 */
         }
 
         .watermark {
             position: absolute;
-            top: 0; 
-            left: 50%;
-            transform: translateX(-50%) translateY(-10px) scale(0.6);
-            transform-origin: bottom center; 
-            width: 350px; 
-            display: flex;
-            justify-content: center;
-            opacity: 0.12; 
+            z-index: 1;
+            opacity: 0.1;
+            transform: scale(0.65);
             pointer-events: none;
-            z-index: 1; 
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.65);
         }
 
-        .watermark svg {
-            display: block;
-            margin: 0;
+        .header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 95%;
         }
 
         h1 {
-            position: relative;
-            z-index: 2; 
             margin: 0;
-            color: #a0522d;
-            font-size: 1.4rem; 
-            white-space: nowrap;
+            padding: 0;
+            font-size: 1.25em;
+            color: var(--primary-color);
             letter-spacing: 1px;
-            line-height: 1; 
+            white-space: nowrap;
         }
 
-        #date-filter {
-            position: relative;
-            z-index: 2;
-            padding: 5px 24px 5px 10px;
-            border: 1.5px solid var(--accent-color);
+        select {
+            padding: 6px 10px;
             border-radius: 20px;
+            border: 1.5px solid var(--accent-color);
+            background: white;
+            font-size: 0.9em;
             color: var(--text-main);
-            background: #ffffff;
-            font-size: 0.9rem;
-            cursor: pointer;
             outline: none;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+            max-width: 180px;
         }
 
         #content {
@@ -193,91 +174,134 @@
             color: var(--text-sub);
             font-style: italic;
         }
+
+        optgroup {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
 
 <header>
     <div class="header-container">
+        <!-- 浮水印 -->
+        <div class="watermark">
+            <svg width="200" height="100" viewBox="0 0 200 100" fill="#a0522d" xmlns="http://w3.org">
+                <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
+                <circle cx="70" cy="25" r="10"/><path d="M60 40h20v45H60z"/><path d="M50 45l10-5M90 45l-10-5" stroke="#a0522d" stroke-width="5"/>
+                <circle cx="110" cy="30" r="10"/><path d="M100 45h20v40H100z"/><path d="M90 45l10 5M130 45l-10 5" stroke="#a0522d" stroke-width="5"/>
+                <circle cx="150" cy="25" r="10"/><path d="M140 40h20v45H140z"/><path d="M130 45l10-5M170 45l-10-5" stroke="#a0522d" stroke-width="5"/>
+            </svg>
+        </div>
+
+        <!-- 內容區：文字與唯一的日期選單並排 -->
         <div class="header-content">
-            <div class="title-wrapper">
-                <!-- 補齊完整且對齊底部的 8 人牽手圖案 SVG -->
-                <div class="watermark">
-                    <svg width="350" height="75" viewBox="0 0 350 75" fill="#a0522d" stroke="#a0522d" stroke-width="2" xmlns="w3.org">
-                        <!-- 人物 1 -->
-                        <circle cx="25" cy="20" r="8"/><path d="M15 32h20v43H15z"/><path d="M5 38l10 8M45 38l-10 8" stroke-width="4"/>
-                        <!-- 人物 2 -->
-                        <circle cx="65" cy="20" r="8"/><path d="M55 32h20v43H55z"/><path d="M45 38l10 8M85 38l-10 8" stroke-width="4"/>
-                        <!-- 人物 3 -->
-                        <circle cx="105" cy="20" r="8"/><path d="M95 32h20v43H95z"/><path d="M85 38l10 8M125 38l-10 8" stroke-width="4"/>
-                        <!-- 人物 4 -->
-                        <circle cx="145" cy="20" r="8"/><path d="M135 32h20v43H135z"/><path d="M125 38l10 8M165 38l-10 8" stroke-width="4"/>
-                        <!-- 人物 5 -->
-                        <circle cx="185" cy="20" r="8"/><path d="M175 32h20v43H175z"/><path d="M165 38l10 8M205 38l-10 8" stroke-width="4"/>
-                        <!-- 人物 6 -->
-                        <circle cx="225" cy="20" r="8"/><path d="M215 32h20v43H215z"/><path d="M205 38l10 8M245 38l-10 8" stroke-width="4"/>
-                        <!-- 人物 7 -->
-                        <circle cx="265" cy="20" r="8"/><path d="M255 32h20v43H255z"/><path d="M245 38l10 8M285 38l-10 8" stroke-width="4"/>
-                        <!-- 人物 8 -->
-                        <circle cx="305" cy="20" r="8"/><path d="M295 32h20v43H295z"/><path d="M285 38l10 8M325 38l-10 8" stroke-width="4"/>
-                    </svg>
-                </div>
-                <h1>桃園國際民俗舞社</h1>
-            </div>
-            
+            <h1>桃園國際民俗舞社</h1>
             <select id="date-filter">
-                <optgroup label="選擇例會日期">
-                    <option value="all">顯示全部舞碼</option>
-                    <option value="2026-05-13">2026-05-13 (本週)</option>
-                    <option value="2026-05-06">2026-05-06</option>
-                </optgroup>
+                <option value="">載入日期中...</option>
             </select>
         </div>
     </div>
 </header>
 
-<main id="content">
-    <!-- 舞碼卡片範例 1 -->
-    <div class="item" data-date="2026-05-13">
-        <span class="item-date">2026-05-13</span>
-        <h2 class="item-title">以色列之子 (Bnei Yisrael)</h2>
-        <div class="item-info"><b>國家：</b>以色列</div>
-        <div class="item-info"><b>話別：</b>團體圈舞</div>
-        <div class="item-info"><b>講師：</b>王大明 老師</div>
-        <div class="links-container">
-            <a href="#" class="video-link" target="_blank">🎬 示範影片</a>
-            <a href="#" class="video-link" target="_blank">🎵 音樂教學</a>
-        </div>
-    </div>
-
-    <!-- 舞碼卡片範例 2 -->
-    <div class="item" data-date="2026-05-06">
-        <span class="item-date">2026-05-06</span>
-        <h2 class="item-title">美麗的土地 (Eretz Israel Yafa)</h2>
-        <div class="item-info"><b>國家：</b>以色列</div>
-        <div class="item-info"><b>話別：</b>雙人舞</div>
-        <div class="item-info"><b>講師：</b>李四 美老師</div>
-        <div class="links-container">
-            <a href="#" class="video-link" target="_blank">🎬 示範影片</a>
-            <a href="#" class="video-link" target="_blank">🎵 音樂教學</a>
-        </div>
-    </div>
-</main>
+<div id="content">
+    <div class="no-data">正在準備舞碼資料...</div>
+</div>
 
 <script>
-    // 簡單的日期篩選互動邏輯
-    document.getElementById('date-filter').addEventListener('change', function(e) {
-        const selectedDate = e.target.value;
-        const items = document.querySelectorAll('.item');
-        
-        items.forEach(item => {
-            if (selectedDate === 'all' || item.getAttribute('data-date') === selectedDate) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vToq63ov94zuD2bBr2rSAymP934KIQA5I6i52AUQszCL3csyaWye2easCKplQzGKVlwSfV_J9VHeSpm/pub?output=csv";
+
+    const contentDiv = document.getElementById("content");
+    const dateFilter = document.getElementById("date-filter");
+    let allData = [];
+
+    fetch(CSV_URL + "&t=" + new Date().getTime())
+        .then(res => res.text())
+        .then(csv => {
+            const rows = csv.split(/\r?\n/);
+            const dateSet = new Set();
+
+            allData = rows.slice(1).map(row => {
+                const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                if (cols.length < 5) return null;
+                const clean = (val) => val ? val.replace(/^"|"$/g, "").trim() : "";
+                
+                const item = {
+                    name: clean(cols[0]),
+                    date: clean(cols[2]),
+                    seq: clean(cols[3]),
+                    country: clean(cols[4]),
+                    type: clean(cols[5]),
+                    difficulty: clean(cols[6]),
+                    link1: clean(cols[7]),
+                    link2: clean(cols[8])
+                };
+
+                if (item.date && item.date !== "#N/A") {
+                    dateSet.add(item.date);
+                    return item;
+                }
+                return null;
+            }).filter(item => item !== null);
+
+            const sortedDates = Array.from(dateSet).sort().reverse();
+            const todayStr = new Date().toISOString().split('T')[0];
+            const upcoming = sortedDates.filter(d => d >= todayStr).sort();
+            const defaultDate = upcoming.length > 0 ? upcoming[0] : sortedDates[0];
+
+            dateFilter.innerHTML = "";
+            
+            const futureGroup = document.createElement("optgroup");
+            futureGroup.label = "🌟 即將到來 / 今日";
+            const pastGroup = document.createElement("optgroup");
+            pastGroup.label = "📚 歷史例會";
+
+            sortedDates.forEach(date => {
+                const opt = document.createElement("option");
+                opt.value = date;
+                opt.textContent = date === todayStr ? `${date} (今日社課)` : date;
+                if (date >= todayStr) {
+                    futureGroup.appendChild(opt);
+                } else {
+                    pastGroup.appendChild(opt);
+                }
+            });
+
+            if (futureGroup.children.length > 0) dateFilter.appendChild(futureGroup);
+            if (pastGroup.children.length > 0) dateFilter.appendChild(pastGroup);
+
+            dateFilter.value = defaultDate;
+            renderData(defaultDate);
+
+            dateFilter.addEventListener("change", (e) => renderData(e.target.value));
+        })
+        .catch(err => {
+            contentDiv.innerHTML = `<div class="no-data">載入失敗，請檢查網路連線或 CSV 連結。</div>`;
         });
-    });
+
+    function renderData(selectedDate) {
+        const filtered = allData.filter(d => d.date === selectedDate)
+                                .sort((a, b) => parseInt(a.seq) - parseInt(b.seq));
+        
+        if (filtered.length === 0) {
+            contentDiv.innerHTML = `<div class="no-data">此日期暫無舞碼資訊。</div>`;
+            return;
+        }
+
+        contentDiv.innerHTML = filtered.map(item => `
+            <div class="item">
+                <span class="item-date">${item.date} 例會 - 第 ${item.seq} 首</span>
+                <div class="item-title"><b>${item.seq}. ${item.name}</b></div>
+                <div class="item-info">🌍 <b>國家/出處：</b>${item.country}</div>
+                <div class="item-info">💃 <b>舞種形式：</b>${item.type} (難度: ${item.difficulty})</div>
+                <div class="links-container">
+                    ${item.link1 ? `<a href="${item.link1}" target="_blank" class="video-link">📺 參考影片 1</a>` : ''}
+                    ${item.link2 ? `<a href="${item.link2}" target="_blank" class="video-link">📺 參考影片 2</a>` : ''}
+                </div>
+            </div>
+        `).join("");
+    }
 </script>
 
 </body>
