@@ -106,22 +106,22 @@
            position: relative;
            overflow: hidden;
         }
-
-        .item::after {
-           content: "";
-           position: absolute;
-           right: 10px;
-           bottom: 10px;
-           width: 120px;
-           height: 120px;
-           background-image: url("./images/dancer.png");
-           background-size: contain;
-           background-repeat: no-repeat;
-           background-position: center;
-           opacity: 1;
-           pointer-events: none;
-        }
-        }
+       .item::after {
+        content: "";
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        width: 120px;
+        height: 120px;
+         /* 正確的 Raw 連結，確保中間沒有空格 */
+       background-image: url("https://raw.githubusercontent.com/tch3202-sketch/folk_dance_Taoyuan/main/images/dancer.png");
+       background-size: contain;
+       background-repeat: no-repeat;
+       background-position: center;
+       opacity: 0.3; /* 稍微調深一點，比較好確認是否有出現 */
+       pointer-events: none;
+       z-index: 0;
+      }
 
         .item-date {
             font-size: 0.85em;
