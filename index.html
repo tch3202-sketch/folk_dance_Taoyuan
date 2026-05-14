@@ -26,12 +26,12 @@
             line-height: 1.6;
         }
 
-        header {
+                header {
             position: sticky;
             top: 0;
             background: rgba(252, 248, 242, 0.95);
             backdrop-filter: blur(5px);
-            padding: 0; /* 移除 header 預設內距 */
+            padding: 8px 0; /* 增加上下內距，手機版才不會太擠 */
             z-index: 1000;
             border-bottom: 2px solid var(--accent-color);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -39,37 +39,37 @@
 
         .header-container {
             position: relative;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             width: 100%;
-            min-height: 60px; /* 這裡控制了抬頭的最小總高度 */
+            display: flex;
+            justify-content: center;
         }
 
-         .watermark {
+        /* 關鍵修正：給抬頭文字一個獨立的包覆層，確保浮水印永遠黏著它 */
+        .title-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .watermark {
             position: absolute;
             z-index: 1;
-            opacity: 0.2; /* 配合您在 HTML 內設定的 0.2 */
+            opacity: 0.2;
             pointer-events: none;
-            
-            /* 修正：完美的絕對居中公式 */
+            /* 完美的絕對置中公式 */
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.65); 
+            transform: translate(-50%, -50%) scale(0.65);
         }
 
         .header-content {
             position: relative;
             z-index: 2;
             display: flex;
+            flex-direction: row;      /* 電腦版預設並排 */
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            width: 95%;
-            
-            /* 新增：為下拉選單預留右側空間，確保文字能真正待在中央 */
-            padding-right: 30px; 
+            gap: 15px;
+            width: 90%;
         }
 
         h1 {
@@ -80,6 +80,15 @@
             letter-spacing: 1px;
             white-space: nowrap;
         }
+
+        /* 📱 針對手機版窄螢幕（寬度 480px 以下）自動調整排版 */
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column; /* 手機版改為上下排 */
+                gap: 6px;               /* 縮小上下間距 */
+            }
+        }
+
 
         select {
             padding: 6px 10px;
@@ -196,12 +205,11 @@
 
 <header>
     <div class="header-container">
-        <!-- 內容區：文字與唯一的日期選單並排 -->
         <div class="header-content">
             
-            <!-- 將浮水印放到與文字同一個容器，或是讓 H1 變成定位基準 -->
-            <div style="position: relative; display: inline-block;">
-                <!-- 浮水印搬移至此 -->
+            <!-- 這是新增的包覆層，專門鎖定文字與浮水印的位置 -->
+            <div class="title-wrapper">
+                <!-- 浮水印 -->
                 <div class="watermark">
                     <svg width="200" height="100" viewBox="0 0 200 100" fill="#a0522d" xmlns="w3.org">
                         <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
@@ -213,12 +221,15 @@
                 <h1>桃園國際民俗舞社</h1>
             </div>
 
+            <!-- 下拉選單 -->
             <select id="date-filter">
                 <option value="">載入日期中...</option>
             </select>
+            
         </div>
     </div>
 </header>
+
 
 
 <div id="content">
