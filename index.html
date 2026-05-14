@@ -95,25 +95,32 @@
             max-width: 600px;
             margin: 0 auto;
         }
-
-        .item {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.15);
-            border-left: var(--border-style);
-            position: relative;
-            overflow: hidden;
+       .item {
+           background: var(--card-bg);
+           border-radius: 15px;
+           padding: 20px;
+           padding-bottom: 40px;
+           margin-bottom: 20px;
+           box-shadow: 0 4px 15px rgba(139, 115, 85, 0.15);
+           border-left: var(--border-style);
+           position: relative;
+           overflow: hidden;
         }
 
         .item::after {
-            content: "💃";
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-            font-size: 2em;
-            opacity: 0.5;
+           content: "";
+           position: absolute;
+           right: 10px;
+           bottom: 10px;
+           width: 120px;
+           height: 120px;
+           background-image: url("images/dancer.png");
+           background-size: contain;
+           background-repeat: no-repeat;
+           background-position: center;
+           opacity: 0.18;
+           pointer-events: none;
+}
         }
 
         .item-date {
