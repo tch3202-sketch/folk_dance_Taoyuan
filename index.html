@@ -47,15 +47,16 @@
             min-height: 60px; /* 這裡控制了抬頭的最小總高度 */
         }
 
-        .watermark {
+         .watermark {
             position: absolute;
             z-index: 1;
-            opacity: 0.1;
-            transform: scale(0.65);
+            opacity: 0.2; /* 配合您在 HTML 內設定的 0.2 */
             pointer-events: none;
+            
+            /* 修正：完美的絕對居中公式 */
             top: 50%;
             left: 50%;
-            transform: translate(-83%, -50%) scale(0.65);
+            transform: translate(-50%, -50%) scale(0.65); 
         }
 
         .header-content {
@@ -66,6 +67,9 @@
             justify-content: center;
             gap: 12px;
             width: 95%;
+            
+            /* 新增：為下拉選單預留右側空間，確保文字能真正待在中央 */
+            padding-right: 30px; 
         }
 
         h1 {
@@ -192,25 +196,30 @@
 
 <header>
     <div class="header-container">
-        <!-- 浮水印 -->
-        <div class="watermark" style="opacity: 0.2;">
-            <svg width="200" height="100" viewBox="0 0 200 100" fill="#a0522d" xmlns="http://w3.org">
-                <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
-                <circle cx="70" cy="25" r="10"/><path d="M60 40h20v45H60z"/><path d="M50 45l10-5M90 45l-10-5" stroke="#a0522d" stroke-width="5"/>
-                <circle cx="110" cy="30" r="10"/><path d="M100 45h20v40H100z"/><path d="M90 45l10 5M130 45l-10 5" stroke="#a0522d" stroke-width="5"/>
-                <circle cx="150" cy="25" r="10"/><path d="M140 40h20v45H140z"/><path d="M130 45l10-5M170 45l-10-5" stroke="#a0522d" stroke-width="5"/>
-            </svg>
-        </div>
-
         <!-- 內容區：文字與唯一的日期選單並排 -->
         <div class="header-content">
-            <h1>桃園國際民俗舞社</h1>
+            
+            <!-- 將浮水印放到與文字同一個容器，或是讓 H1 變成定位基準 -->
+            <div style="position: relative; display: inline-block;">
+                <!-- 浮水印搬移至此 -->
+                <div class="watermark">
+                    <svg width="200" height="100" viewBox="0 0 200 100" fill="#a0522d" xmlns="w3.org">
+                        <circle cx="30" cy="30" r="10"/><path d="M20 45h20v40H20z"/><path d="M10 45l10 10M50 45l-10 10" stroke="#a0522d" stroke-width="5"/>
+                        <circle cx="70" cy="25" r="10"/><path d="M60 40h20v45H60z"/><path d="M50 45l10-5M90 45l-10-5" stroke="#a0522d" stroke-width="5"/>
+                        <circle cx="110" cy="30" r="10"/><path d="M100 45h20v40H100z"/><path d="M90 45l10 5M130 45l-10 5" stroke="#a0522d" stroke-width="5"/>
+                        <circle cx="150" cy="25" r="10"/><path d="M140 40h20v45H140z"/><path d="M130 45l10-5M170 45l-10-5" stroke="#a0522d" stroke-width="5"/>
+                    </svg>
+                </div>
+                <h1>桃園國際民俗舞社</h1>
+            </div>
+
             <select id="date-filter">
                 <option value="">載入日期中...</option>
             </select>
         </div>
     </div>
 </header>
+
 
 <div id="content">
     <div class="no-data">正在準備舞碼資料...</div>
